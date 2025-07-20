@@ -46,7 +46,7 @@ const Todolist = () => {
 						<li
 							key={index}
 							className="list-group-item d-flex justify-content-between">
-							<span>{index + 1}. {task}</span>
+							<span>{task}</span>
 							<button
 								onClick={() => deleteTask(index)}
 								style={{ border: 'none', background: 'none', padding: 0, cursor: 'pointer' }}
