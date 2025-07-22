@@ -23,7 +23,7 @@ const Todolist = () => {
     }
 
     return (
-        <div className="container">
+        <div className="container" style={{}}>
             <div className="row">
                 <div className="title">
                     <h1>Todos</h1>
@@ -35,7 +35,7 @@ const Todolist = () => {
                         value={inputValue}
                         placeholder="What needs to be done?"
                         onChange={handleInputChange}
-                        onKeyPress={(e) => {
+                        onKeyDown={(e) => {
                             if (e.key === 'Enter') {
                                 addTaskToList();
                             }
@@ -56,7 +56,7 @@ const Todolist = () => {
 						</li>
 					))}
 				</ul>
-                {task.length > 0 ? (
+                    {task.length > 0 ? (
 					<div>
 						{task.length} item{task.length === 1 ? '' : 's'} left
 					</div>
