@@ -1,34 +1,32 @@
 import React, { useState } from "react";
 
-
-
 const Todolist = () => {
     const [inputValue, setInputValue] = useState('')
-    const [task, setTasks] = useState([]);
+    const [task, setTask] = useState([]);
 
     function handleInputChange(e) {
         setInputValue(e.target.value);
     }
 
     function addTaskToList() {
-        if (inputValue.trim()) {
-            setTasks(prevTasks => [...prevTasks, inputValue]);
+        if (inputValue) {
+            setTask(prevTasks => [...prevTasks, inputValue]);
             setInputValue('');
         }
     }
 
     function deleteTask(index){
         const newList = task.filter((_, i) => i !== index);
-        setTasks(newList);
+        setTask(newList);
     }
 
     return (
-        <div className="container" style={{}}>
-            <div className="row">
-                <div className="title">
-                    <h1>Todos</h1>
+        <div className="d-flex justify-content-center" style={{}}>
+            <div className="paper row d-flex justify-content-center mt-5">
+                <div className="title d-flex justify-content-center">
+                    <h1>todos</h1>
                 </div>
-                <div className="tasks col-12 p-0">
+                <div className="tasks d-flex justify-content-center col-12 p-0">
                     <input
                         className="form-control"
                         type="text"
@@ -41,20 +39,21 @@ const Todolist = () => {
                             }
                         }} />
                 </div>
-                <ul className="list-group col-12 p-0">
-					{task.map((task, index) => (
-						<li
-							key={index}
-							className="list-group-item d-flex justify-content-between">
-							<span>{task}</span>
-							<button
-								onClick={() => deleteTask(index)}
-								style={{ border: 'none', background: 'none', padding: 0, cursor: 'pointer' }}
-							>
-								<i className="far fa-trash-alt"></i>
-							</button>
-						</li>
-					))}
+                <ul 
+                    className="list-group col-12 p-0">
+					    {task.map((task, index) => (
+                            <li
+                                key={index}
+                                className="list-group-item d-flex justify-content-between">
+                                <span>{task}</span>
+                                <button
+                                    onClick={() => deleteTask(index)}
+                                    style={{ border: 'none', background: 'none'}}
+                                >
+                                    <i className="far fa-trash-alt"></i>
+                                </button>
+                            </li>
+					    ))}
 				</ul>
                     {task.length > 0 ? (
 					<div>
