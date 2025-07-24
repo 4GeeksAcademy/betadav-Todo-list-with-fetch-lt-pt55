@@ -1,6 +1,17 @@
 import React, { useState } from "react";
 
 const Todolist = () => {
+
+    fetch('https://playground.4geeks.com/todo/docs')
+    .then(response => {
+        console.log(response.ok)
+        console.log(response.status)
+    })
+
+    .catch(error => {
+        console.log('Oh No! There was a problem: \n', error);
+    });
+    
     const [inputValue, setInputValue] = useState('')
     const [task, setTask] = useState([]);
 
