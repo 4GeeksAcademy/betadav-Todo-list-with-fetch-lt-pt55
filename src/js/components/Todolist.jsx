@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 const Todolist = () => {
-    
+
     const [inputValue, setInputValue] = useState('')
     const [task, setTask] = useState([]);
 
@@ -10,13 +10,24 @@ const Todolist = () => {
     }
 
     function addTaskToList() {
-        if (inputValue) {
-            setTask(prevTasks => [...prevTasks, inputValue]);
-            setInputValue('');
-        }
+        fetch('https://playground.4geeks.com/todo/todos/David', {
+            method: "POST",
+            body: JSON.stringify({ label: inputValue }),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (inputValue) {
+                    console.log('Success:', data);
+                    setTask(prevTasks => [...prevTasks, inputValue]);
+                    setInputValue('');
+                }
+            })
     }
 
-    function deleteTask(index){
+    function deleteTask(index) {
         const newList = task.filter((_, i) => i !== index);
         setTask(newList);
     }
@@ -40,31 +51,31 @@ const Todolist = () => {
                             }
                         }} />
                 </div>
-                <ul 
+                <ul
                     className="list-group col-12 p-0">
-					    {task.map((task, index) => (
-                            <li
-                                key={index}
-                                className="list-group-item d-flex justify-content-between">
-                                <span>{task}</span>
-                                <button
-                                    onClick={() => deleteTask(index)}
-                                    style={{ border: 'none', background: 'none'}}
-                                >
-                                    <i className="far fa-trash-alt"></i>
-                                </button>
-                            </li>
-					    ))}
-				</ul>
-                    {task.length > 0 ? (
-					<div>
-						{task.length} item{task.length === 1 ? '' : 's'} left
-					</div>
-				) : (
-					<div>
-						No hay tareas, añadir tareas
-					</div>
-				)}
+                    {task.map((task, index) => (
+                        <li
+                            key={index}
+                            className="list-group-item d-flex justify-content-between">
+                            <span>{task}</span>
+                            <button
+                                onClick={() => deleteTask(index)}
+                                style={{ border: 'none', background: 'none' }}
+                            >
+                                <i className="far fa-trash-alt"></i>
+                            </button>
+                        </li>
+                    ))}
+                </ul>
+                {task.length > 0 ? (
+                    <div>
+                        {task.length} item{task.length === 1 ? '' : 's'} left
+                    </div>
+                ) : (
+                    <div>
+                        No hay tareas, añadir tareas
+                    </div>
+                )}
             </div>
         </div>
     )
