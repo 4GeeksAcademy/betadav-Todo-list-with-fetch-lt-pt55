@@ -1,9 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const Todolist = () => {
 
     const [inputValue, setInputValue] = useState('')
-    const [task, setTask] = useState([]);
+    const [tasks, setTask] = useState([]);
+
+    function getToDos() {
+        fetch('https://playground.4geeks.com/todo/users/David')
+            .then((response) => response.json())
+            .then((data) => setTask(data.todos))
+            .catch(error => {
+                console.log(error);
+            });
+    }
+    useEffect(() => {
+        getToDos()
+    }, [])
 
     function handleInputChange(e) {
         setInputValue(e.target.value);
@@ -18,20 +30,23 @@ const Todolist = () => {
             }
         })
             .then((response) => response.json())
-            .then((data) => {
+            .then(() => {
                 if (inputValue) {
-                    console.log('Success:', data);
-                    setTask(prevTasks => [...prevTasks, inputValue]);
                     setInputValue('');
+                    getToDos();
                 }
             })
     }
 
-    function deleteTask(index) {
-        const newList = task.filter((_, i) => i !== index);
-        setTask(newList);
-    }
+    function deleteTask(id) {
+        fetch(`https://playground.4geeks.com/todo/todos/${id}`, {
+            method: "DELETE"
+        })
+        .then(() => {
+        getToDos();
+    })
 
+    }
     return (
         <div className="d-flex justify-content-center" style={{}}>
             <div className="paper row d-flex justify-content-center mt-5">
@@ -53,13 +68,13 @@ const Todolist = () => {
                 </div>
                 <ul
                     className="list-group col-12 p-0">
-                    {task.map((task, index) => (
+                    {tasks.map((todo) => (
                         <li
-                            key={index}
+                            key={todo.id}
                             className="list-group-item d-flex justify-content-between">
-                            <span>{task}</span>
+                            <span>{todo.label}</span>
                             <button
-                                onClick={() => deleteTask(index)}
+                                onClick={() => deleteTask(todo.id)}
                                 style={{ border: 'none', background: 'none' }}
                             >
                                 <i className="far fa-trash-alt"></i>
@@ -67,9 +82,9 @@ const Todolist = () => {
                         </li>
                     ))}
                 </ul>
-                {task.length > 0 ? (
+                {tasks.length > 0 ? (
                     <div>
-                        {task.length} item{task.length === 1 ? '' : 's'} left
+                        {tasks.length} item{tasks.length === 1 ? '' : 's'} left
                     </div>
                 ) : (
                     <div>
